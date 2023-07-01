@@ -1,0 +1,19 @@
+server:
+  port: 9992
+
+spring:
+  kafka:
+    bootstrap-servers: http://localhost:9092
+    task:
+      scheduler:
+        period: 20000
+    producer:
+      client-id: server-first
+      key-serializer: org.apache.kafka.common.serialization.StringSerializer
+      value-serializer: org.apache.kafka.common.serialization.StringSerializer
+      retries: 2
+      topic: EKB_TEMP
+      key: IN_KEY
+
+test:
+  value: This is weather station First

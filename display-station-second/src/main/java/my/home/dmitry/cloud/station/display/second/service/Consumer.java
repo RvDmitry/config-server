@@ -1,0 +1,43 @@
+package my.home.dmitry.cloud.station.display.second.service;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
+import org.springframework.kafka.annotation.KafkaListener;
+import org.springframework.kafka.support.Acknowledgment;
+import org.springframework.kafka.support.KafkaHeaders;
+import org.springframework.messaging.handler.annotation.Header;
+import org.springframework.messaging.handler.annotation.Payload;
+import org.springframework.stereotype.Service;
+
+@Service
+@ConditionalOnProperty("spring.kafka.consumer.enabled")
+public class Consumer {
+
+    private final Logger logger = LoggerFactory.getLogger(Consumer.class);
+
+    @KafkaListener(id = "europe-asia", topics = "#{'${spring.kafka.consumer.topics}'.split(',')}")
+    public void consume(final @Payload String message,
+                        final @Header(KafkaHeaders.OFFSET) Integer offset,
+                        final @Header(KafkaHeaders.RECEIVED_MESSAGE_KEY) String key,
+                        final @Header(KafkaHeaders.RECEIVED_PARTITION_ID) int partition,
+                        final @Header(KafkaHeaders.RECEIVED_TOPIC) String topic,
+                        final @Header(KafkaHeaders.RECEIVED_TIMESTAMP) long ts,
+                        final Acknowledgment acknowledgment
+    ) {
+        logger.info(
+                "Consumed\n"
+                        + "topic: {}\n"
+                        + "partition: {}\n"
+                        + "offset: {}\n"
+                        + "key: {}\n"
+                        + "message: {}",
+                topic,
+                partition,
+                offset,
+                key,
+                message
+        );
+        acknowledgment.acknowledge();
+    }
+}

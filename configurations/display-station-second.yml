@@ -1,0 +1,24 @@
+server:
+  port: 9994
+
+spring:
+  kafka:
+    bootstrap-servers: http://localhost:9092
+    consumer:
+      auto-offset-reset: earliest
+      group-id: europe-asia
+      key-deserializer: org.apache.kafka.common.serialization.StringDeserializer
+      value-deserializer: org.apache.kafka.common.serialization.StringDeserializer
+      max-poll-records: 1
+      fetch-max-wait: 36000
+      enable-auto-commit: false
+      client-id: client-second
+      enabled: true
+      topics: MSK_TEMP,OMS_TEMP
+    listener:
+      poll-timeout: 1800000
+      concurrency: 1
+      ack-mode: manual_immediate
+
+test:
+  value: This is display station Second

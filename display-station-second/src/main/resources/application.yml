@@ -1,0 +1,26 @@
+spring:
+  application:
+    name: display-station-second
+  config:
+    import: optional:configserver:http://localhost:8888
+  cloud:
+    bus:
+      enabled: true
+    stream:
+      kafka:
+        binder:
+          zkNodes: localhost:2181
+          brokers: localhost:9092
+  profiles:
+    active: default
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: "*"
+
+eureka:
+  client:
+    service-url:
+      defaultZone: http://localhost:8090/eureka
